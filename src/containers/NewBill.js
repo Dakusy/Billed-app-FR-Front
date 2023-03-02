@@ -15,17 +15,27 @@ export default class NewBill {
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
   }
+
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    const fileInput = this.document.querySelector(`input[data-testid="file"]`); // get input file
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+
+    const fileExtension = fileName.split('.').pop(); // on met dans la const l'extension du fichier
+
+    const fileFormats = ["jpg", "jpeg", "png"]; // ajouts des formats autorisés 
+
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
 
-    this.store
+
+    // si le format de l'extension est bon on crée la note de frais sinon non.
+    if (fileFormats.includes(fileExtension)) {
+      this.store
       .bills()
       .create({
         data: formData,
@@ -39,7 +49,15 @@ export default class NewBill {
         this.fileUrl = fileUrl
         this.fileName = fileName
       }).catch(error => console.error(error))
+    } 
+    //sinon on affiche une alerte et on vide l'input, aucune note de frais n'est créée
+    else {
+      alert("Le format du fichier sélectionné est interdit. Veuillez sélectionner un fichier png, jpg ou jpeg.");
+      fileInput.value = "";
+    }
+
   }
+
   handleSubmit = e => {
     e.preventDefault()
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
