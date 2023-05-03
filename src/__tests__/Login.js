@@ -233,8 +233,8 @@ describe("When I create a user with a valid email and bad password and I click o
   test("Then it should renders message error Login page", () => {
     document.body.innerHTML = LoginUI();
     const inputData = {
-      email: "andy@email.com",
-      password: "azerty",
+      email: "test@email.com",
+      password: "azertyuiop",
     };
 
     const inputEmailUser = screen.getByTestId("employee-email-input");

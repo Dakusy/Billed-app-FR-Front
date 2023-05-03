@@ -50,7 +50,7 @@ describe("Given I am connected as an employee", () => {
     test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills })
       const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
-      const antiChrono = (a, b) => ((a < b) ? 1 : +1)
+      const antiChrono = (a, b) => ((a < b) ? 1 : +1) // On change la valeur -1 to +1
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
     })
@@ -100,7 +100,7 @@ describe("Given I am connected as an employee", () => {
   });
 
 
-  // TEST : redirected on newBill page if click on new bill button
+  // TEST : redirection sur nouvelle note de frais si on click sur le bouton new bill
   describe('When I am on Bills page and I click on the new bill button Nouvelle note de frais', () => {
     test('Then I should navigate to newBill page bill/new', () => {
       document.body.innerHTML = BillsUI({ bills });
@@ -129,18 +129,7 @@ describe("Given I am connected as an employee", () => {
 describe("Given I am a user connected as Employee", () => {
   describe("When I navigate to Bills Page", () => { 
     test("fetches bills from mock API GET", async () => {
-      /* localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@a" }));
-       const root = document.createElement("div")
-       root.setAttribute("id", "root")
-       document.body.append(root)
-       router()
-       window.onNavigate(ROUTES_PATH.Bills)
-       await waitFor(() => screen.getByText("Validations"))
-       const contentPending  = await screen.getByText("En attente (1)")
-       expect(contentPending).toBeTruthy()
-       const contentRefused  = await screen.getByText("Refusé (2)")
-       expect(contentRefused).toBeTruthy()
-       expect(screen.getByTestId("big-billed-icon")).toBeTruthy()*/
+      //DELETED
     })
 
   describe("When an error occurs on API", () => {
