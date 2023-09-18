@@ -4,6 +4,7 @@
   },
   "jest": {
     "verbose": false,
+    "testEnvironment": "jsdom",
     "setupFiles": [
       "./setup-jest.js"
     ],

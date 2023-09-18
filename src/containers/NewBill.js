@@ -52,7 +52,7 @@ export default class NewBill {
     } 
     //sinon on affiche une alerte et on vide l'input, aucune note de frais n'est créée
     else {
-      alert("Le format du fichier sélectionné est interdit. Veuillez sélectionner un fichier png, jpg ou jpeg.");
+      console.log("Le format du fichier sélectionné est interdit. Veuillez sélectionner un fichier png, jpg ou jpeg.");
       fileInput.value = "";
     }
 
