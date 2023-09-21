@@ -9,7 +9,7 @@ const row = (bill) => {
   return (`
     <tr>
       <td>${bill.type}</td>
-      <td>${bill.name}</td>
+      <td data-testid="bill-row-name">${bill.name}</td>
       <td>${bill.date}</td>
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
@@ -20,12 +20,10 @@ const row = (bill) => {
     `)
   }
 
-const rows = (data) => {
-  return (data && data.length) ? data
-  .sort((a,b) => {return ((a.date < b.date) ? 1 : -1 )})
-  .map(bill => row(bill))
-  .join("") : ""
-}
+  //Fix bug notes e frais affichage par ordre décroissant
+  const rows = (data) => {
+    return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+  }
 
 export default ({ data: bills, loading, error }) => {
   

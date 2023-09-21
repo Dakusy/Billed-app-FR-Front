@@ -8,16 +8,17 @@ import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
 import Bills from '../containers/Bills.js';
 import { ROUTES } from '../constants/routes';
+import mockedBills from "../__mocks__/store.js";
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 import "@testing-library/jest-dom";
-import store from '../__mocks__/store';
-import Store from '../app/Store.js'
+import BillsContainer from "../containers/Bills.js";
 import mockStore from "../__mocks__/store"
+import router from "../app/Router.js";
 
 jest.mock("../app/store", () => mockStore)
 
-import router from "../app/Router.js";
+
 
 
 //Initialisation de la Navigation 
@@ -124,13 +125,39 @@ describe("Given I am connected as an employee", () => {
 
 
 
-
-    // test d'intégration GET
-describe("Given I am a user connected as Employee", () => {
-  describe("When I navigate to Bills Page", () => { 
-    test("fetches bills from mock API GET", async () => {
-      //DELETED
-    })
+  // Test d'integration GET Bills
+      //Test d'intégration: getBills()
+      describe("When I request getBills()", () => {
+        //Vérification de la validité de la liste retournée par getBills
+        test("Then getBills is not empty", async () => {
+          const onNavigate = (pathname) => {
+            document.body.innerHTML = ROUTES({ pathname })
+          }
+          var container = new BillsContainer({document, onNavigate, store: mockStore, localStorage: localStorageMock});
+          var res = await container.getBills();
+          expect(res.length).toBeGreaterThan(0);
+        })
+  
+        test("Then bills should be ordered from earliest to latest", async() => {
+          const pureBills = await mockedBills.bills().list();
+          const orderedPureBills = pureBills.sort((a, b) => a.date < b.date ? -1 : 1);
+          const orderedPureBillsName = Object.values(orderedPureBills.map(bill => bill.name));
+    
+          const billsContainer = new Bills({
+            document: document,
+            onNavigate: onNavigate,
+            store: mockedBills,
+            localStorage: window.localStorage
+          })
+    
+          const treatedBills = await billsContainer.getBills();
+          document.body.innerHTML = BillsUI({data: treatedBills});
+    
+          const renderedBillsNames = screen.getAllByTestId('bill-row-name').map(billItemNameElement => billItemNameElement.textContent);
+    
+          expect(renderedBillsNames).toEqual(orderedPureBillsName);
+    
+        })
 
   describe("When an error occurs on API", () => {
     beforeEach(() => {
@@ -181,5 +208,5 @@ describe("Given I am a user connected as Employee", () => {
 
 })
 
-})
+
 
